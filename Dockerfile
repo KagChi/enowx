@@ -44,15 +44,8 @@ RUN /root/.local/bin/enowxai setup || true
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Expose ports
-EXPOSE 1430 1431
-
 # Create volumes for persistent data
 VOLUME ["/root/.enowxai", "/root/.local/lib/enowxai/auth/.venv"]
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD curl -sf http://localhost:1430/health || exit 1
 
 # Set entrypoint and default command
 ENTRYPOINT ["/entrypoint.sh"]
