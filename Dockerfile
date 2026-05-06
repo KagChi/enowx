@@ -44,6 +44,10 @@ RUN /root/.local/bin/enowxai setup || true
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Set environment variables
+ENV ENOWXAI_PROXY_HOST=0.0.0.0
+ENV ENOWXAI_DASHBOARD_HOST=0.0.0.0
+
 # Create volumes for persistent data
 VOLUME ["/root/.enowxai", "/root/.local/lib/enowxai/auth/.venv"]
 
