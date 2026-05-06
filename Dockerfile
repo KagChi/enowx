@@ -10,11 +10,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xvfb \
     fonts-liberation \
     libnss3 \
+    libnspr4 \
     libatk-bridge2.0-0 \
+    libatk1.0-0 \
     libdrm2 \
     libxcomposite1 \
     libxdamage1 \
     libxrandr2 \
+    libxext6 \
+    libxfixes3 \
+    libxtst6 \
+    libx11-6 \
     libgbm1 \
     libasound2 \
     libpango-1.0-0 \
@@ -23,22 +29,31 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxss1 \
     libgtk-3-0 \
     libdbus-glib-1-2 \
+    at-spi2-core \
+    mesa-utils \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Install enowx-ai
 RUN curl -sSL https://api.enowxlabs.com/install/enowx-ai | bash
 
+# Setup Python venv and Camoufox browser
+RUN /root/.local/bin/enowxai setup || true
+
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Expose ports
 EXPOSE 1430 1431
 
-# Create volume for persistent data
-VOLUME ["/root/.enowxai"]
+# Create volumes for persistent data
+VOLUME ["/root/.enowxai", "/root/.local/lib/enowxai/auth/.venv"]
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
     CMD curl -sf http://localhost:1430/health || exit 1
 
 # Set entrypoint and default command
-ENTRYPOINT ["/root/.local/bin/enowxai"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["__daemon"]
