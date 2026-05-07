@@ -49,6 +49,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Set environment variables
+ENV DISPLAY=:99
 ENV ENOWXAI_PROXY_HOST=0.0.0.0
 ENV ENOWXAI_DASHBOARD_HOST=0.0.0.0
 
