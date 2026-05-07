@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-venv \
     xvfb \
+    xauth \
     fonts-liberation \
     libnss3 \
     libnspr4 \
@@ -39,6 +40,9 @@ RUN curl -sSL https://api.enowxlabs.com/install/enowx-ai | bash
 
 # Setup Python venv and Camoufox browser
 RUN /root/.local/bin/enowxai setup || true
+
+# Fetch Camoufox browser binary
+RUN python3 -m pip install --break-system-packages camoufox && python3 -m camoufox fetch || true
 
 # Copy entrypoint script
 COPY entrypoint.sh /entrypoint.sh
