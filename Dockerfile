@@ -44,7 +44,7 @@ RUN /root/.local/bin/enowxai setup || true
 # Fetch Camoufox browser binary
 RUN python3 -m pip install --break-system-packages camoufox && python3 -m camoufox fetch || true
 
-# Copy entrypoint script
+# Copy entrypoint scripts
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
